@@ -10,6 +10,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Illuminate\Support\Collection;
 
 class BoxResource extends Resource
 {
@@ -45,10 +46,14 @@ class BoxResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('customer.name'),
-                Tables\Columns\TextColumn::make('country.name'),
+                Tables\Columns\TextColumn::make('customer.name')->sortable(),
+                Tables\Columns\TextColumn::make('country.name')->sortable(),
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')->sortable(),
+                Tables\Columns\TextColumn::make('items_count')
+                    ->sortable()
+                    ->label('Items')
+                    ->counts('items'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
@@ -61,7 +66,11 @@ class BoxResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make()
+                    ->requiresConfirmation()
+                    ->before(function (Collection $records) {
+                        $records->each(fn (Box $record) => $record->items()->delete());
+                    }),
             ]);
     }
 

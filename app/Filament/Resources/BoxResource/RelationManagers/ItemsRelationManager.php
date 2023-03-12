@@ -40,9 +40,9 @@ class ItemsRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')->searchable(),
                 Tables\Columns\TextColumn::make('quantity'),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')->sortable(),
             ])
             ->filters([
                 //
@@ -59,7 +59,7 @@ class ItemsRelationManager extends RelationManager
                     })
                     ->requiresConfirmation()
                     ->label('Verify')
-                    ->hidden(fn(Item $record) => $record->status === BoxItemStatus::VERIFIED)
+                    ->hidden(fn (Item $record) => $record->status === BoxItemStatus::VERIFIED)
                     ->icon('heroicon-o-check'),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
