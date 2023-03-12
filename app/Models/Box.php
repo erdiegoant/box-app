@@ -6,6 +6,7 @@ use App\Enums\BoxStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Box extends Model
 {
@@ -20,6 +21,19 @@ class Box extends Model
     protected $casts = [
         'status' => BoxStatus::class,
     ];
+
+    protected $hidden = [
+        'id',
+    ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::creating(function (self $box) {
+            $box->uuid = Str::uuid()->toString();
+        });
+    }
 
     public function origin(): BelongsTo
     {

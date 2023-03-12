@@ -51,6 +51,7 @@ class BoxResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('uuid')->searchable(),
                 Tables\Columns\TextColumn::make('customer.name')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('origin.city')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('destination.city')->sortable()->searchable(),
