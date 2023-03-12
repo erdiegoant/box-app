@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\BoxStatus;
 use App\Filament\Resources\BoxResource\Pages;
 use App\Models\Box;
 use Filament\Forms;
@@ -28,7 +29,14 @@ class BoxResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('name')
                     ->required(),
-                Forms\Components\TextInput::make('status')
+                Forms\Components\Select::make('status')
+                    ->options(collect(BoxStatus::cases())
+                        ->flatMap(function (BoxStatus $status) {
+                            return [
+                                $status->value => str($status->name)->replaceFirst('_', ' '),
+                            ];
+                        })->toArray())
+                    ->default(BoxStatus::DRAFT)
                     ->required(),
             ]);
     }
@@ -60,7 +68,7 @@ class BoxResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            BoxResource\RelationManagers\ItemsRelationManager::class,
         ];
     }
 

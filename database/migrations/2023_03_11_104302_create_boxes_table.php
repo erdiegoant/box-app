@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\BoxStatus;
 use App\Models\Country;
 use App\Models\Customer;
 use Illuminate\Database\Migrations\Migration;
@@ -15,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->foreignIdFor(Customer::class);
             $table->foreignIdFor(Country::class);
-            $table->string('status');
+            $table->string('status')->default(BoxStatus::DRAFT->value);
             $table->timestamps();
         });
     }

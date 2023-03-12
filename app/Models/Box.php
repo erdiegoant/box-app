@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\BoxStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,6 +13,11 @@ class Box extends Model
         'country_id',
         'customer_id',
         'status',
+        'name',
+    ];
+
+    protected $casts = [
+        'status' => BoxStatus::class,
     ];
 
     public function country(): BelongsTo

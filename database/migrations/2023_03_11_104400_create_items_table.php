@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\BoxItemStatus;
 use App\Models\Box;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,6 +14,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Box::class);
             $table->string('name');
+            $table->string('status')->default(BoxItemStatus::CREATED->value);
             $table->integer('quantity');
             $table->timestamps();
         });
