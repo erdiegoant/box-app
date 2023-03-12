@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Country extends Model
 {
-    protected $fillable = ['name', 'code'];
+    protected $fillable = ['country', 'city', 'lat', 'long'];
+
+    protected $casts = [
+        'lat' => 'double',
+        'long' => 'double',
+    ];
 
     public function boxes(): HasMany
     {
-        return $this->hasMany(Box::class);
+        return $this->hasMany(Box::class, 'origin_id');
     }
 }

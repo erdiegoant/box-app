@@ -10,6 +10,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Support\Collection;
 
 class BoxResource extends Resource
@@ -25,8 +26,12 @@ class BoxResource extends Resource
                 Forms\Components\Select::make('customer_id')
                     ->relationship('customer', 'name')
                     ->required(),
-                Forms\Components\Select::make('country_id')
-                    ->relationship('country', 'name')
+                Forms\Components\Select::make('origin_id')
+                    ->relationship('origin', 'city')
+                    ->required(),
+                Forms\Components\Select::make('destination_id')
+                    ->relationship('destination', 'city')
+                    ->different('origin_id')
                     ->required(),
                 Forms\Components\TextInput::make('name')
                     ->required(),
@@ -46,8 +51,9 @@ class BoxResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('customer.name')->sortable(),
-                Tables\Columns\TextColumn::make('country.name')->sortable(),
+                Tables\Columns\TextColumn::make('customer.name')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('origin.city')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('destination.city')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('status')->sortable(),
                 Tables\Columns\TextColumn::make('items_count')
@@ -55,15 +61,24 @@ class BoxResource extends Resource
                     ->label('Items')
                     ->counts('items'),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Created')
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Last updated')
                     ->dateTime(),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->options(collect(BoxStatus::cases())
+                        ->flatMap(function (BoxStatus $status) {
+                            return [
+                                $status->value => str($status->name)->replaceFirst('_', ' '),
+                            ];
+                        })->toArray()),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make()

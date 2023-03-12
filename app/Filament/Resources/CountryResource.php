@@ -17,13 +17,15 @@ class CountryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-flag';
 
+    protected static ?string $label = 'Destinations';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('code')
+                Forms\Components\TextInput::make('country')
                     ->required(),
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('city')
                     ->required(),
             ]);
     }
@@ -32,8 +34,8 @@ class CountryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('code')->sortable(),
-                Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('country')->sortable(),
+                Tables\Columns\TextColumn::make('city')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('boxes_count')
                     ->sortable()
                     ->label('Boxes')

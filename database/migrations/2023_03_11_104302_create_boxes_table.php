@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignIdFor(Customer::class);
-            $table->foreignIdFor(Country::class);
+            $table->foreignIdFor(Country::class, 'origin_id');
+            $table->foreignIdFor(Country::class, 'destination_id');
             $table->string('status')->default(BoxStatus::DRAFT->value);
             $table->timestamps();
         });

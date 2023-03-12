@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Box extends Model
 {
     protected $fillable = [
-        'country_id',
+        'origin_id',
+        'destination_id',
         'customer_id',
         'status',
         'name',
@@ -20,9 +21,14 @@ class Box extends Model
         'status' => BoxStatus::class,
     ];
 
-    public function country(): BelongsTo
+    public function origin(): BelongsTo
     {
-        return $this->belongsTo(Country::class);
+        return $this->belongsTo(Country::class, 'origin_id');
+    }
+
+    public function destination(): BelongsTo
+    {
+        return $this->belongsTo(Country::class, 'destination_id');
     }
 
     public function customer(): BelongsTo
