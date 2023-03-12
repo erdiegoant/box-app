@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\BoxesController;
+use App\Http\Controllers\Api\CustomerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +19,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group(['prefix' => 'boxes'], function () {
+    Route::post('/', [BoxesController::class, 'store']);
+    Route::get('{uuid}', [BoxesController::class, 'details']);
+});
+
+Route::get('customer/{document}', [CustomerController::class, 'detail']);
