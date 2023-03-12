@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'boxes'], function () {
+    Route::get('/', [BoxesController::class, 'index']);
     Route::post('/', [BoxesController::class, 'store']);
     Route::get('{uuid}', [BoxesController::class, 'details']);
 });
