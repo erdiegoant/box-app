@@ -34,7 +34,7 @@ class CountryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('country')->sortable(),
+                Tables\Columns\TextColumn::make('country')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('city')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('boxes_count')
                     ->sortable()
