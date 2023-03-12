@@ -37,4 +37,9 @@ class BoxesController extends Controller
             'data' => $boxes,
         ], Response::HTTP_OK);
     }
+
+    public function store(Request $request): JsonResponse
+    {
+        return response()->json();
+    }
 }
